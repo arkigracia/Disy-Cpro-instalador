@@ -1,0 +1,13 @@
+
+{
+  "id": "./",
+  "name": "DISY-CPRO",
+  "short_name": "DISY-CPRO",
+  "description": "Acceso directo a DISY-CPRO",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef2f6",
+  "theme_color": "#123b65"
+}
