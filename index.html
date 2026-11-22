@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Instalar DISY-CPRO</title>
+
+  <meta name="theme-color" content="#123b65">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DISY-CPRO">
+
+  <link rel="icon" href="favicon%20(1).ico">
+  <link rel="apple-touch-icon" href="png%20icono.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: Arial, sans-serif;
+      background: #eef2f6;
+      color: #18334e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 22px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.09);
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 260px;
+      max-height: 125px;
+      object-fit: contain;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 23px;
+      margin-bottom: 14px;
+      color: #123b65;
+    }
+
+    .descripcion {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #64748b;
+      margin-bottom: 28px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 17px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #instalar {
+      background: #164b78;
+      color: white;
+    }
+
+    #ahoraNo {
+      margin-top: 12px;
+      background: #edf1f5;
+      color: #526579;
+    }
+
+    #instrucciones {
+      display: none;
+      margin-top: 25px;
+      padding: 18px;
+      background: #f0f5fa;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    #instrucciones h2 {
+      font-size: 17px;
+      margin-bottom: 10px;
+      color: #123b65;
+    }
+
+    #mensaje {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .pie {
+      margin-top: 28px;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="contenedor">
+
+    <img
+      class="logo"
+      src="logotipo%20principal.png"
+      alt="DISY-CPRO"
+    >
+
+    <h1>DISY-CPRO</h1>
+
+    <p class="descripcion">
+      ¿Quieres instalar DISY-CPRO en tu pantalla principal
+      para acceder fácilmente a la aplicación?
+    </p>
+
+    <button id="instalar">
+      SÍ, QUIERO INSTALAR
+    </button>
+
+    <button id="ahoraNo">
+      Ahora no
+    </button>
+
+    <section id="instrucciones">
+
+      <h2 id="tituloInstrucciones">
+        Cómo instalar DISY-CPRO
+      </h2>
+
+      <div id="textoInstrucciones"></div>
+
+    </section>
+
+    <p id="mensaje"></p>
+
+    <div class="pie">
+      DISY-CPRO · Acceso a la aplicación
+    </div>
+
+  </main>
+
+  <script>
+
+    const URL_APP =
+      "https://script.google.com/macros/s/AKfycbxtUsSzy7hkByfV-GqFKlSE_91CdSLqb9435Q6HT1wNxcZk5119j9OgJH7410UL_vWdBQ/exec";
+
+    const botonInstalar = document.getElementById("instalar");
+    const botonAhoraNo = document.getElementById("ahoraNo");
+    const instrucciones = document.getElementById("instrucciones");
+    const titulo = document.getElementById("tituloInstrucciones");
+    const texto = document.getElementById("textoInstrucciones");
+    const mensaje = document.getElementById("mensaje");
+
+    let eventoInstalacion = null;
+
+    const esIOS =
+      /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    const esWhatsApp =
+      /WhatsApp/i.test(navigator.userAgent);
+
+    const estaInstalada =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      navigator.standalone === true;
+
+    // Si se abre desde el icono instalado,
+    // entrar directamente a DISY-CPRO.
+
+    if (estaInstalada) {
+      window.location.replace(URL_APP);
+    }
+
+    // Detectar la opción de instalación de Android.
+
+    window.addEventListener("beforeinstallprompt", (evento) => {
+      evento.preventDefault();
+      eventoInstalacion = evento;
+    });
+
+    // Botón principal.
+
+    botonInstalar.addEventListener("click", async () => {
+
+      instrucciones.style.display = "block";
+
+      if (esIOS) {
+
+        titulo.textContent = "Instalar en iPhone o iPad";
+
+        if (esWhatsApp) {
+          texto.innerHTML = `
+            <p>
+              1. Abre el menú de WhatsApp y selecciona
+              <strong>Abrir en Safari</strong>.
+            </p>
+            <p>
+              2. En Safari, pulsa el botón
+              <strong>Compartir</strong>.
+            </p>
+            <p>
+              3. Selecciona
+              <strong>Añadir a pantalla de inicio</strong>.
+            </p>
+            <p>
+              4. Confirma con <strong>Añadir</strong>.
+            </p>
+          `;
+        } else {
+          texto.innerHTML = `
+            <p>
+              1. Pulsa el botón
+              <strong>Compartir</strong> de Safari.
+            </p>
+            <p>
+              2. Selecciona
+              <strong>Añadir a pantalla de inicio</strong>.
+            </p>
+            <p>
+              3. Confirma con <strong>Añadir</strong>.
+            </p>
+          `;
+        }
+
+      } else if (eventoInstalacion) {
+
+        eventoInstalacion.prompt();
+
+        const resultado = await eventoInstalacion.userChoice;
+
+        if (resultado.outcome === "accepted") {
+          mensaje.textContent =
+            "Se aceptó la instalación de DISY-CPRO.";
+        }
+
+        eventoInstalacion = null;
+
+      } else {
+
+        titulo.textContent = "Instalar en Android";
+
+        texto.innerHTML = `
+          <p>
+            1. Abre el menú de tu navegador.
+          </p>
+          <p>
+            2. Busca <strong>Instalar aplicación</strong>
+            o <strong>Añadir a pantalla de inicio</strong>.
+          </p>
+          <p>
+            3. Confirma la instalación.
+          </p>
+        `;
+
+      }
+
+    });
+
+    botonAhoraNo.addEventListener("click", () => {
+      instrucciones.style.display = "none";
+      mensaje.textContent = "Puedes instalar DISY-CPRO cuando quieras.";
+    });
+
+    // Registrar el service worker del instalador.
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .catch(error => {
+            console.log("Service Worker:", error);
+          });
+      });
+    }
+
+  </script>
+
+</body>
+</html>
